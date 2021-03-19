@@ -18,7 +18,7 @@
 					<tr>
 						<th>결재자</th>
 						<td>
-							<select class="selectuser" ref="approvaluserid">
+							<select class="selectuser" ref="approvalname">
 								<option disabled="disabled" selected> 결재자를 선택하세요 </option>
 								<option v-for="item in pre" v-bind:key="item.userid">{{item.name}}</option>
 							</select>
@@ -26,7 +26,7 @@
 					</tr>
 					<tr>
 						<th>내용</th>
-						<td><textarea v-model="content" ref="content"></textarea></td>
+						<td><textarea v-model="content" ref="content" v-html="handleNewLine(content)"></textarea></td>
 					</tr>
 				</table>
 			</form>
@@ -78,9 +78,6 @@ export default {
 				this.$refs.content.focus(); //방식으로 선택자를 찾는다.
 				return;
 			}
-			console.log('this.title=== ' + this.title);
-			console.log('this.content=== ' + this.content);
-			console.log('this.approvaluserid=== ' + this.approvaluserid);
 			this.form = { //backend로 전송될 POST 데이터
 				board_code:this.board_code
 				,title:this.title
@@ -116,6 +113,7 @@ export default {
 				this.content = this.read.content.replace(/(\n)/g,'<br/>');
 				this.status = this.read.status;
 				this.id = this.read.id;
+				this.approvalname = this.read.approval_name;
 			})
 			.catch((err)=>{
 				console.log(err);
@@ -164,6 +162,9 @@ export default {
 		,fnView() {
 			this.$router.push({path:'./read',"query":this.body});
 		}	
+		,   handleNewLine(str) {    
+       return String(str).replace("</br>","");
+   }
 	}	
 }
 </script>

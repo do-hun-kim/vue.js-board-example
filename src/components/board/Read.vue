@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>결재</h1>
+		<h1>결재 조회</h1>
 
 		<div class="AddWrap">
 			<form>
@@ -16,7 +16,7 @@
 					</tr>
 					<tr>
 						<th>결재자</th>
-						<td>{{title}}</td>
+						<td>{{approval_name}}</td>
 					</tr>
 					<tr>
 						<th>내용</th>
@@ -46,6 +46,7 @@ export default {
 			,status:''
 			,id:this.$route.query.id
 			,mode:''
+			,approval_name:''
 		}
 	}
 	,mounted() {
@@ -59,7 +60,8 @@ export default {
 				this.title = this.read.title;
 				this.content = this.read.content.replace(/(\n)/g,'<br/>');
 				this.status = this.read.status;
-				this.id = this.read.id;
+				this.approval_name = this.read.approval_name;
+
 			})
 			.catch((err)=>{
 				console.log(err);
