@@ -4,7 +4,11 @@
 		<div class="menuWrap">
 			<ul class="menu">
 				<li><router-link to="/board/list">결재 게시판</router-link></li>
-				<li><a href="javascript:;">결재 요청 확인</a></li>
+				<li>결재 요청 확인(사용자 선택 --->)</li>
+				<li><select class="selectuser" ref="approvalname" @change="onChange($event)">
+								<option disabled="disabled" selected> 결재자를 선택하세요 </option>
+								<option v-for="item in pre" v-bind:key="item.userid">{{item.name}}</option>
+							</select></li>
 			</ul>
 		</div>
 	</header>
@@ -12,7 +16,32 @@
 
 <script>
 export default {
-	
+	data() { //변수 생성
+		return{
+			pre:'',
+			body:''
+		}
+	}
+	,mounted() { //최초 로딩 시 실행
+		this.fnGetPreWrite()
+	},methods:{
+			fnGetPreWrite() {
+			this.$axios.get('http://localhost:8001/prewrite')
+			.then((res)=>{
+				this.pre = JSON.parse(JSON.stringify(res.data));
+			})
+			.catch((err)=>{
+				console.log(err);
+			})
+			}, onChange(event) {
+				console.log('12222');
+				this.body = { // 데이터 전송
+					username: event.target.value
+				} 
+				console.log(event.target.value);
+			this.$router.push({path:'/board/request',query:this.body});
+		}
+	}
 }
 </script>
 

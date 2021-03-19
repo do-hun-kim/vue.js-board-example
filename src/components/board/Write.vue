@@ -18,7 +18,7 @@
 					<tr>
 						<th>결재자</th>
 						<td>
-							<select class="selectuser" ref="approvalname">
+							<select class="selectuser" ref="approvalname" @change="onChange($event)">
 								<option disabled="disabled" selected> 결재자를 선택하세요 </option>
 								<option v-for="item in pre" v-bind:key="item.userid">{{item.name}}</option>
 							</select>
@@ -47,7 +47,7 @@ export default {
 			,title:''
 			,content:''
 			,userid:'9999'
-			,name:'admin'
+			,name:'user'
 			,approvalname:''
 			,approvaluserid:''
 			,form:'' //form 전송 데이터
@@ -85,7 +85,7 @@ export default {
 				,userid:this.userid
 				,name:this.name
 				,approvaluserid:this.approvaluserid
-				,approvalname:this.approvaluserid
+				,approvalname:this.approvalname
 			} 
 
 			this.$axios.post('http://localhost:8001/write',this.form)
@@ -161,6 +161,9 @@ export default {
 		}
 		,fnView() {
 			this.$router.push({path:'./read',"query":this.body});
+		}
+		, onChange(event) {
+				this.approvalname = event.target.value;
 		}	
 		,   handleNewLine(str) {    
        return String(str).replace("</br>","");

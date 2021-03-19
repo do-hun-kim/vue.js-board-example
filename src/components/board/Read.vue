@@ -29,6 +29,8 @@
 		<div class="btnWrap">
 			<a href="javascript:;" @click="fnList" class="btn">목록</a>
 			<a v-if="read.status == 0" href="javascript:;" @click="fnMod" class="btnAdd btn">수정</a>
+			<a v-if="read.status == 0" href="javascript:;" @click="fnApploval" class="btnAdd btn">승인</a>
+			<a v-if="read.status == 0" href="javascript:;" @click="fnReject" class="btnAdd btn">반려</a>
 			
 		</div>	
 	</div>
@@ -77,6 +79,43 @@ export default {
 			} 
 			console.log(this.form)
 			this.$router.push({path:'./write',query:this.form}); //등록화면으로 이동하면서 파라미터를 넘겨준다.
+		},fnApploval() {
+			this.form = { //backend로 전송될 POST 데이터
+				id:this.id 
+				,status: 3000
+			} 
+			this.$axios.post('http://localhost:8001/complete',this.form)
+			.then((res)=>{
+				if(res.data == 'success') {
+					alert('결재 승인 되었습니다..');
+					this.fnReqList();
+				} else {
+					alert("실행중 실패했습니다.\n다시 이용해 주세요");
+				}
+			})
+			.catch((err)=>{
+				console.log(err);
+			})
+		},fnReject() {
+			this.form = { //backend로 전송될 POST 데이터
+				id:this.id 
+				,status: 9000
+			} 
+			this.$axios.post('http://localhost:8001/complete',this.form)
+			.then((res)=>{
+				if(res.data == 'success') {
+					alert('결재 반려 되었습니다.');
+					this.fnReqList();
+				} else {
+					alert("실행중 실패했습니다.\n다시 이용해 주세요");
+				}
+			})
+			.catch((err)=>{
+				console.log(err);
+			})
+		},fnReqList() {//조회 페이지 이동
+            //this.body.id = id; // 결재자 정보
+                this.$router.push({path:'./request',query:this.body}); //추가한 상세페이지 라우터
 		}
 	}
 }
