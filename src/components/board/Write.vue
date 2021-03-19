@@ -18,7 +18,7 @@
 					<tr>
 						<th>결재자</th>
 						<td>
-							<select class="selectuser" ref="approvaluserid" @change="calculateCategoryName">
+							<select class="selectuser" ref="approvaluserid">
 								<option disabled="disabled" selected> 결재자를 선택하세요 </option>
 								<option v-for="item in pre" v-bind:key="item.userid">{{item.name}}</option>
 							</select>
@@ -64,10 +64,6 @@ export default {
 		}
 	}
 	,methods:{
-		  calculateCategoryName: function(event) {
-        var ageCategory = this.ageCategory;
-        var ageCategoryName = this.ageValues[this.ageCategory];
-    },
 		fnList(){ //리스트 화면으로 이동 함수
 			this.$router.push({path:'./list',query:this.body});
 		}
